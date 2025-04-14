@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -86,7 +85,6 @@ dependencies {
 
     // Compose Foundation
     implementation("androidx.compose.foundation:foundation:1.6.0") // Updated
-
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta")
 
     // Paging 3
