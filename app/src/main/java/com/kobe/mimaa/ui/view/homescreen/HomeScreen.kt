@@ -21,7 +21,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Bonjour Ben")
+        Text(text = "Bonjour Ben comment vas tu ?")
     }
 
 }
