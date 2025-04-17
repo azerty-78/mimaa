@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mima\'a</string>
+    <string name="emai">Entrez votre email</string>
+    <string name="password">Entrez votre mot de passe</string>
 </resources>

@@ -18,6 +18,11 @@ object Routes{
 
         //route du graph home
         object HomeScreen : Screen("home_screen")
+        //how to manage more route
+        object TopicList : Screen("topic_list")
+        object TopicDetail : Screen("topic_detail/{topicId}"){
+            fun setRoute(topicId : Int) = "topic_detail/$topicId"
+        }
 
         //route du graph community
         object CommunityScreen : Screen("home_screen")
