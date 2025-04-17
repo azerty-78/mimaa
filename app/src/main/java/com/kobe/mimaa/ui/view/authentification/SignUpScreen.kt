@@ -1,8 +1,10 @@
 package com.kobe.mimaa.ui.view.authentification
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +16,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -33,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,6 +50,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.kobe.mimaa.R
+import com.kobe.mimaa.presentation.navgraph.Routes
 import okhttp3.internal.wait
 
 @Composable
@@ -55,13 +61,13 @@ fun SignUpScreen(
     val empty by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val c_password by remember { mutableStateOf("") }
+    var c_password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(false) }
-    val c_passwordVisibility by remember { mutableStateOf(false) }
-    val errorE by remember { mutableStateOf(false) }
-    val errorP by remember { mutableStateOf(false) }
-    val errorCP by remember { mutableStateOf(false) }
-    val errorC by remember { mutableStateOf(false) }
+    var c_passwordVisibility by remember { mutableStateOf(false) }
+    var errorE by remember { mutableStateOf(false) }
+    var errorP by remember { mutableStateOf(false) }
+    var errorCP by remember { mutableStateOf(false) }
+    var errorC by remember { mutableStateOf(false) }
     var p_length by remember { mutableStateOf(false) }
 
     //for firebase indicator
@@ -196,8 +202,9 @@ fun SignUpScreen(
             )
         }
 
+        //password textfield
         TextField(
-            value = email,
+            value = password,
             onValueChange = {newValue->
                 password = newValue
                 p_length = (newValue.length < 6)
@@ -273,6 +280,132 @@ fun SignUpScreen(
                 modifier = Modifier.padding(end = 100.dp),
                 color = androidx.compose.material3.MaterialTheme.colorScheme.onError
             )
+        }
+        if(errorC){
+            Text(
+                text = "Entrez un mot de passe conforme",
+                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier.padding(end = 100.dp),
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+            )
+        }
+        TextField(
+            value = c_password,
+            onValueChange = { newValue ->
+                c_password = newValue
+            },
+            label = {
+                Text(
+                    text = stringResource(R.string.confirm_password),
+                )
+            },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.lock_filled_icn),
+                    contentDescription = "c_password"
+                )
+            },
+            trailingIcon = {
+                if (c_password.isNotEmpty()) {
+                    val visibilityIcon =
+                        if (c_passwordVisibility) {
+                            painterResource(R.drawable.visibillity_on_filled_icn)
+                        } else {
+                            painterResource(R.drawable.visibility_off_filled_icn)
+                        }
+                    Icon(
+                        painter = visibilityIcon,
+                        contentDescription = if (c_passwordVisibility) "hide C_Password" else "Show C_Password",
+                        modifier = Modifier
+                            .clickable {
+                                c_passwordVisibility = !c_passwordVisibility
+                            }
+                    )
+                }
+            },
+            visualTransformation = if (c_passwordVisibility) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Password
+            ),
+            singleLine = true,
+            textStyle = TextStyle(
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            ),
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .width(300.dp)
+                .height(60.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                cursorColor = Color.Red,
+                focusedLabelColor = Color.White,
+                unfocusedLabelColor = Color.White,
+                leadingIconColor = Color.Black,
+                trailingIconColor = Color.Black
+            ),
+        )
+
+        //signup button
+        Spacer(modifier = Modifier.height(50.dp))
+        Box(
+            modifier = Modifier
+                .clip(RoundedCornerShape(8.dp))
+                .background(Color.White)
+        ){
+            Button(
+                onClick = {
+                    //conditions
+                    if(email.isNotEmpty()){
+                        errorE = false
+                        if(password.isNotEmpty()){
+                            errorP = false
+                            if(c_password.isNotEmpty()){
+                                errorC = false
+                                if (password == c_password){
+                                    errorCP = false
+
+                                    //signUp
+                                    //vm.signUp(email, password)
+                                }else{
+                                    errorCP = true
+                                }
+                            }else{
+                                errorC = true
+                            }
+                        }else{
+                            errorP = true
+                        }
+                    }else{
+                        errorE = true
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    Color.Transparent
+                ),
+                modifier = Modifier.width(200.dp)
+            ){
+                Text(
+                    text = "Creer un compte",
+                    color = Color.Black,
+                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+//            if (vm.signedIn.value){
+//                navController.navigate(Routes.Screen.LoginScreen.route)
+//            }
+//            vm.signedIn.value = false
         }
 
     }
