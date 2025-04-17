@@ -97,7 +97,7 @@ fun SignUpScreen(
     ) {
         //logo app
         AsyncImage(
-            model = "",
+            model = null,
             placeholder = painterResource(id = R.drawable.person_filled_icn),
             error = painterResource(id = R.drawable.person_filled_icn),
             contentDescription = null,
