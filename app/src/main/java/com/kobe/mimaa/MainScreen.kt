@@ -24,7 +24,7 @@ fun MainScreen(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.HOME_GRAPHROUTE
+        startDestination = Routes.AUTH_GRAPHROUTE
     ){
         authGraph(navController = navController)
         homeGraph(navController = navController)

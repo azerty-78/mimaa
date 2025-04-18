@@ -3,20 +3,26 @@ package com.kobe.mimaa.ui.view.authentification
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kobe.mimaa.R
+import com.kobe.mimaa.presentation.navgraph.Routes
 
 @Composable
 fun LoginScreen(
@@ -57,11 +64,8 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 150.dp)
-            .verticalScroll(
-                rememberScrollState()
-            )
-
+            .padding(top = 100.dp, start = 20.dp, end = 20.dp)
+            .verticalScroll(rememberScrollState())
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -75,17 +79,24 @@ fun LoginScreen(
                 .clip(RoundedCornerShape(30.dp))
             ,
         )
-
         Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "Creez votre compte",
+            style = MaterialTheme.typography.headlineSmall.copy(
+                fontWeight = FontWeight.Bold,
+            )
+        )
+        Spacer(modifier = Modifier.height(50.dp))
+
+
         //email error
         if(errorE){
             Text(
                 text = "Entrez votre email",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                color = MaterialTheme.colorScheme.onError
             )
         }
         TextField(
@@ -114,7 +125,8 @@ fun LoginScreen(
                 }
             },
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email
             ),
             singleLine = true,
             textStyle = TextStyle(
@@ -124,8 +136,8 @@ fun LoginScreen(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(300.dp)
-                .height(60.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
             ,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
@@ -144,21 +156,19 @@ fun LoginScreen(
         if(errorP){
             Text(
                 text = "Entrez votre mot de passe",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                color = MaterialTheme.colorScheme.onError
             )
         }
         if(p_length){
             Text(
                 text = "Le mot de passe doit avoir au moins 6 caracteres",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                style = MaterialTheme.typography.labelLarge.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                color = MaterialTheme.colorScheme.onError
             )
         }
 
@@ -169,11 +179,7 @@ fun LoginScreen(
                 password = newValue
                 p_length = (newValue.length < 6)
             },
-            label = {
-                Text(
-                    text = stringResource(R.string.password),
-                )
-            },
+            label = { Text(text = stringResource(R.string.password),) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock_filled_icn),
@@ -215,8 +221,8 @@ fun LoginScreen(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(300.dp)
-                .height(60.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
             ,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
@@ -225,9 +231,104 @@ fun LoginScreen(
                 focusedLabelColor = Color.White,
                 unfocusedLabelColor = Color.White,
                 leadingIconColor = Color.Black,
-                trailingIconColor = Color.Black
+                trailingIconColor = Color.White
             ),
         )
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        //Button de connexion
+        Button(
+            onClick = {
+                //conditions
+                if(email.isNotEmpty()){
+                    errorE = false
+                    if(password.isNotEmpty()){
+                        errorP = false
+                        //code de connexion
+                    }else{
+                        errorP = true
+                    }
+                }else{
+                    errorE = true
+                }
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
+            shape = RoundedCornerShape(8.dp),
+            elevation = ButtonDefaults.elevation(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+            ,
+        ){
+            Text(
+                text = "Se connecter",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
+                )
+            )
+        }
+
+        //Ou
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "Ou",
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        //continuer avec google
+        Button(
+            onClick = {
+                //
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            ),
+            shape = RoundedCornerShape(8.dp),
+            elevation = ButtonDefaults.elevation(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+            ,
+        ){
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(R.drawable.home_filled_icn),
+                    contentDescription = "Google logo",
+                    modifier = Modifier.size(30.dp),
+                )
+                Spacer(modifier = Modifier.width(20.dp))
+                Text(
+                    text = "Continuer avec Google",
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+        //navigation
+        Text(
+            text = "Vous n'avez pas de compte ? Creez un compte",
+            style = MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(Routes.Screen.SingUpScreen.route)
+                }
+            ,
+            //color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+        )
+        Spacer(modifier = Modifier.height(50.dp))
 
 
     }

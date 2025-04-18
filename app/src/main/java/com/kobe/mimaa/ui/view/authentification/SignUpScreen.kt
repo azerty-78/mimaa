@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -71,27 +73,24 @@ fun SignUpScreen(
     var p_length by remember { mutableStateOf(false) }
 
     //for firebase indicator
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(10.dp)
-//        ,
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ){
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+        ,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
 //        if(vm.inProgress.value){
 //            CircularProgressIndicator()
 //        }
-//    }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 150.dp)
-            .verticalScroll(
-                rememberScrollState()
-            )
-
+            .padding(top = 100.dp, start = 20.dp, end = 20.dp)
+            .verticalScroll(rememberScrollState())
         ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -114,9 +113,9 @@ fun SignUpScreen(
                 fontWeight = FontWeight.Bold,
             )
         )
+        Spacer(modifier = Modifier.height(50.dp))
 
 
-        Spacer(modifier = Modifier.height(10.dp))
         //email error
         if(errorE){
             Text(
@@ -154,7 +153,8 @@ fun SignUpScreen(
                 }
             },
             keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Email
             ),
             singleLine = true,
             textStyle = TextStyle(
@@ -164,8 +164,8 @@ fun SignUpScreen(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(300.dp)
-                .height(60.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
             ,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
@@ -255,8 +255,8 @@ fun SignUpScreen(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(300.dp)
-                .height(60.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
             ,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
@@ -296,11 +296,7 @@ fun SignUpScreen(
             onValueChange = { newValue ->
                 c_password = newValue
             },
-            label = {
-                Text(
-                    text = stringResource(R.string.confirm_password),
-                )
-            },
+            label = { Text(text = stringResource(R.string.confirm_password),) },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock_filled_icn),
@@ -342,8 +338,9 @@ fun SignUpScreen(
             ),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .width(300.dp)
-                .height(60.dp),
+                .fillMaxWidth()
+                .wrapContentHeight()
+            ,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
@@ -357,56 +354,71 @@ fun SignUpScreen(
 
         //signup button
         Spacer(modifier = Modifier.height(50.dp))
-        Box(
-            modifier = Modifier
-                .clip(RoundedCornerShape(8.dp))
-                .background(Color.White)
-        ){
-            Button(
-                onClick = {
-                    //conditions
-                    if(email.isNotEmpty()){
-                        errorE = false
-                        if(password.isNotEmpty()){
-                            errorP = false
-                            if(c_password.isNotEmpty()){
-                                errorC = false
-                                if (password == c_password){
-                                    errorCP = false
+        Button(
+            onClick = {
+                //conditions
+                if(email.isNotEmpty()){
+                    errorE = false
+                    if(password.isNotEmpty()){
+                        errorP = false
+                        if(c_password.isNotEmpty()){
+                            errorC = false
+                            if (password == c_password){
+                                errorCP = false
 
-                                    //signUp
-                                    //vm.signUp(email, password)
-                                }else{
-                                    errorCP = true
-                                }
+                                //signUp
+                                //vm.signUp(email, password)
                             }else{
-                                errorC = true
+                                errorCP = true
                             }
                         }else{
-                            errorP = true
+                            errorC = true
                         }
                     }else{
-                        errorE = true
+                        errorP = true
                     }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    Color.Transparent
-                ),
-                modifier = Modifier.width(200.dp)
-            ){
-                Text(
-                    text = "Creer un compte",
-                    color = Color.Black,
-                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    )
+                }else{
+                    errorE = true
+                }
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+            ),
+            shape = RoundedCornerShape(8.dp),
+            elevation = ButtonDefaults.elevation(10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+            ,
+        ){
+            Text(
+                text = "Creer un compte",
+                color = Color.Black,
+                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold
                 )
-            }
+            )
+        }
 //            if (vm.signedIn.value){
 //                navController.navigate(Routes.Screen.LoginScreen.route)
 //            }
 //            vm.signedIn.value = false
-        }
+
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = "Vous avez deja un compte ? Connectez-vous",
+            style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                fontWeight = FontWeight.Bold,
+            ),
+            modifier = Modifier
+                .clickable {
+                    navController.navigate(Routes.Screen.LoginScreen.route)
+                }
+            ,
+            //color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+        )
+        Spacer(modifier = Modifier.height(50.dp))
 
     }
 }
