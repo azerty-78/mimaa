@@ -26,6 +26,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TextField
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -86,340 +87,345 @@ fun SignUpScreen(
 //        }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 100.dp, start = 20.dp, end = 20.dp)
-            .verticalScroll(rememberScrollState())
-        ,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        //logo app
-        AsyncImage(
-            model = null,
-            placeholder = painterResource(id = R.drawable.person_filled_icn),
-            error = painterResource(id = R.drawable.person_filled_icn),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = androidx.compose.material3.MaterialTheme.colorScheme.background
+    ){
+        Column(
             modifier = Modifier
-                .size(50.dp)
-                .clip(RoundedCornerShape(30.dp))
+                .fillMaxSize()
+                .padding(top = 100.dp, start = 20.dp, end = 20.dp)
+                .verticalScroll(rememberScrollState())
             ,
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        Text(
-            text = "Creez votre compte",
-            style = androidx.compose.material3.MaterialTheme.typography.headlineSmall.copy(
-                fontWeight = FontWeight.Bold,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            //logo app
+            AsyncImage(
+                model = null,
+                placeholder = painterResource(id = R.drawable.person_filled_icn),
+                error = painterResource(id = R.drawable.person_filled_icn),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(RoundedCornerShape(30.dp))
+                ,
             )
-        )
-        Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
 
-        //email error
-        if(errorE){
             Text(
-                text = "Entrez votre email",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                text = "Creez votre compte",
+                style = androidx.compose.material3.MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.Bold,
                 ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onBackground
             )
-        }
-        TextField(
-            value = email,
-            onValueChange = {newValue->
-                email = newValue
-            },
-            label = {
+            Spacer(modifier = Modifier.height(50.dp))
+
+
+            //email error
+            if(errorE){
                 Text(
-                    text = stringResource(R.string.emai),
+                    text = "Entrez votre email",
+                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.padding(end = 100.dp),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onError
                 )
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.person_filled_icn),
-                    contentDescription = "email"
-                )
-            },
-            trailingIcon = {
-                if(email.isNotEmpty()){
-                    Icon(
-                        painter = painterResource(R.drawable.close_icn),
-                        contentDescription = null,
-                        modifier = Modifier.clickable { email = empty }
+            }
+            TextField(
+                value = email,
+                onValueChange = {newValue->
+                    email = newValue
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.emai),
                     )
-                }
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Email
-            ),
-            singleLine = true,
-            textStyle = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Red,
-                focusedLabelColor = Color.White,
-                unfocusedLabelColor = Color.White,
-                leadingIconColor = Color.Black,
-                trailingIconColor = Color.White
-            ),
-        )
-
-
-        Spacer(modifier = Modifier.height(10.dp))
-        //password error
-        if(errorP){
-            Text(
-                text = "Entrez votre mot de passe",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
-            )
-        }
-        if(p_length){
-            Text(
-                text = "Le mot de passe doit avoir au moins 6 caracteres",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
-            )
-        }
-
-        //password textfield
-        TextField(
-            value = password,
-            onValueChange = {newValue->
-                password = newValue
-                p_length = (newValue.length < 6)
-            },
-            label = {
-                Text(
-                    text = stringResource(R.string.password),
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.lock_filled_icn),
-                    contentDescription = "password"
-                )
-            },
-            trailingIcon = {
-                if(password.isNotEmpty()){
-                    val visibilityIcon =
-                        if(passwordVisibility){
-                        painterResource(R.drawable.visibillity_on_filled_icn)
-                        }
-                        else{ painterResource(R.drawable.visibility_off_filled_icn)
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.person_filled_icn),
+                        contentDescription = "email"
+                    )
+                },
+                trailingIcon = {
+                    if(email.isNotEmpty()){
+                        Icon(
+                            painter = painterResource(R.drawable.close_icn),
+                            contentDescription = null,
+                            modifier = Modifier.clickable { email = empty }
+                        )
                     }
-                    Icon(
-                        painter = visibilityIcon,
-                        contentDescription = if(passwordVisibility) "hide Password" else "Show Password",
-                        modifier = Modifier
-                            .clickable {
-                                passwordVisibility =! passwordVisibility
-                            }
-                    )
-                }
-            },
-            visualTransformation = if(passwordVisibility){
-                VisualTransformation.None
-            }else{
-                PasswordVisualTransformation()
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Password
-            ),
-            singleLine = true,
-            textStyle = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Red,
-                focusedLabelColor = Color.White,
-                unfocusedLabelColor = Color.White,
-                leadingIconColor = Color.Black,
-                trailingIconColor = Color.Black
-            ),
-        )
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Email
+                ),
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                ,
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Red,
+                    focusedLabelColor = Color.White,
+                    unfocusedLabelColor = Color.White,
+                    leadingIconColor = Color.Black,
+                    trailingIconColor = Color.White
+                ),
+                //isError = email.isNotBlank() && !validations["email"]!!,
+            )
 
-        Spacer(modifier = Modifier.height(10.dp))
-        //password confirmation error
-        if(errorCP){
-            Text(
-                text = "Le mot de passe ne correspond pas",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
-            )
-        }
-        if(errorC){
-            Text(
-                text = "Entrez un mot de passe conforme",
-                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                ),
-                modifier = Modifier.padding(end = 100.dp),
-                color = androidx.compose.material3.MaterialTheme.colorScheme.onError
-            )
-        }
-        TextField(
-            value = c_password,
-            onValueChange = { newValue ->
-                c_password = newValue
-            },
-            label = { Text(text = stringResource(R.string.confirm_password),) },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(R.drawable.lock_filled_icn),
-                    contentDescription = "c_password"
+
+            Spacer(modifier = Modifier.height(10.dp))
+            //password error
+            if(errorP){
+                Text(
+                    text = "Entrez votre mot de passe",
+                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.padding(end = 100.dp),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onError
                 )
-            },
-            trailingIcon = {
-                if (c_password.isNotEmpty()) {
-                    val visibilityIcon =
-                        if (c_passwordVisibility) {
-                            painterResource(R.drawable.visibillity_on_filled_icn)
-                        } else {
-                            painterResource(R.drawable.visibility_off_filled_icn)
-                        }
-                    Icon(
-                        painter = visibilityIcon,
-                        contentDescription = if (c_passwordVisibility) "hide C_Password" else "Show C_Password",
-                        modifier = Modifier
-                            .clickable {
-                                c_passwordVisibility = !c_passwordVisibility
-                            }
+            }
+            if(p_length){
+                Text(
+                    text = "Le mot de passe doit avoir au moins 6 caracteres",
+                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.padding(end = 100.dp),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                )
+            }
+
+            //password textfield
+            TextField(
+                value = password,
+                onValueChange = {newValue->
+                    password = newValue
+                    p_length = (newValue.length < 6)
+                },
+                label = {
+                    Text(
+                        text = stringResource(R.string.password),
                     )
-                }
-            },
-            visualTransformation = if (c_passwordVisibility) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done,
-                keyboardType = KeyboardType.Password
-            ),
-            singleLine = true,
-            textStyle = TextStyle(
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            ),
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-            colors = TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.Red,
-                focusedLabelColor = Color.White,
-                unfocusedLabelColor = Color.White,
-                leadingIconColor = Color.Black,
-                trailingIconColor = Color.Black
-            ),
-        )
-
-        //signup button
-        Spacer(modifier = Modifier.height(50.dp))
-        Button(
-            onClick = {
-                //conditions
-                if(email.isNotEmpty()){
-                    errorE = false
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.lock_filled_icn),
+                        contentDescription = "password"
+                    )
+                },
+                trailingIcon = {
                     if(password.isNotEmpty()){
-                        errorP = false
-                        if(c_password.isNotEmpty()){
-                            errorC = false
-                            if (password == c_password){
-                                errorCP = false
+                        val visibilityIcon =
+                            if(passwordVisibility){
+                                painterResource(R.drawable.visibillity_on_filled_icn)
+                            }
+                            else{ painterResource(R.drawable.visibility_off_filled_icn)
+                            }
+                        Icon(
+                            painter = visibilityIcon,
+                            contentDescription = if(passwordVisibility) "hide Password" else "Show Password",
+                            modifier = Modifier
+                                .clickable {
+                                    passwordVisibility =! passwordVisibility
+                                }
+                        )
+                    }
+                },
+                visualTransformation = if(passwordVisibility){
+                    VisualTransformation.None
+                }else{
+                    PasswordVisualTransformation()
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Password
+                ),
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                ,
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Red,
+                    focusedLabelColor = Color.White,
+                    unfocusedLabelColor = Color.White,
+                    leadingIconColor = Color.Black,
+                    trailingIconColor = Color.Black
+                ),
+            )
 
-                                //signUp
-                                //vm.signUp(email, password)
+            Spacer(modifier = Modifier.height(10.dp))
+            //password confirmation error
+            if(errorCP){
+                Text(
+                    text = "Le mot de passe ne correspond pas",
+                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.padding(end = 100.dp),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                )
+            }
+            if(errorC){
+                Text(
+                    text = "Entrez un mot de passe conforme",
+                    style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier.padding(end = 100.dp),
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+                )
+            }
+            TextField(
+                value = c_password,
+                onValueChange = { newValue ->
+                    c_password = newValue
+                },
+                label = { Text(text = stringResource(R.string.confirm_password),) },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.lock_filled_icn),
+                        contentDescription = "c_password"
+                    )
+                },
+                trailingIcon = {
+                    if (c_password.isNotEmpty()) {
+                        val visibilityIcon =
+                            if (c_passwordVisibility) {
+                                painterResource(R.drawable.visibillity_on_filled_icn)
+                            } else {
+                                painterResource(R.drawable.visibility_off_filled_icn)
+                            }
+                        Icon(
+                            painter = visibilityIcon,
+                            contentDescription = if (c_passwordVisibility) "hide C_Password" else "Show C_Password",
+                            modifier = Modifier
+                                .clickable {
+                                    c_passwordVisibility = !c_passwordVisibility
+                                }
+                        )
+                    }
+                },
+                visualTransformation = if (c_passwordVisibility) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Password
+                ),
+                singleLine = true,
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                ),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                ,
+                colors = TextFieldDefaults.textFieldColors(
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    cursorColor = Color.Red,
+                    focusedLabelColor = Color.White,
+                    unfocusedLabelColor = Color.White,
+                    leadingIconColor = Color.Black,
+                    trailingIconColor = Color.Black
+                ),
+            )
+
+            //signup button
+            Spacer(modifier = Modifier.height(50.dp))
+            Button(
+                onClick = {
+                    //conditions
+                    if(email.isNotEmpty()){
+                        errorE = false
+                        if(password.isNotEmpty()){
+                            errorP = false
+                            if(c_password.isNotEmpty()){
+                                errorC = false
+                                if (password == c_password){
+                                    errorCP = false
+
+                                    //signUp
+                                    //vm.signUp(email, password)
+                                }else{
+                                    errorCP = true
+                                }
                             }else{
-                                errorCP = true
+                                errorC = true
                             }
                         }else{
-                            errorC = true
+                            errorP = true
                         }
                     }else{
-                        errorP = true
+                        errorE = true
                     }
-                }else{
-                    errorE = true
-                }
-            },
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
-            ),
-            shape = RoundedCornerShape(8.dp),
-            elevation = ButtonDefaults.elevation(10.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
-        ){
-            Text(
-                text = "Creer un compte",
-                color = Color.Black,
-                style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+                    contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                ),
+                shape = RoundedCornerShape(8.dp),
+                elevation = ButtonDefaults.elevation(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                ,
+            ){
+                Text(
+                    text = "Creer un compte",
+                    color = Color.Black,
+                    style = androidx.compose.material3.MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold
+                    )
                 )
-            )
-        }
+            }
 //            if (vm.signedIn.value){
 //                navController.navigate(Routes.Screen.LoginScreen.route)
 //            }
 //            vm.signedIn.value = false
 
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "Vous avez deja un compte ? Connectez-vous",
-            style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
-                fontWeight = FontWeight.Bold,
-            ),
-            modifier = Modifier
-                .clickable {
-                    navController.navigate(Routes.Screen.LoginScreen.route)
-                }
-            ,
-            //color = androidx.compose.material3.MaterialTheme.colorScheme.onError
-        )
-        Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "Vous avez deja un compte ? Connectez-vous",
+                style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier.clickable { navController.navigate(Routes.Screen.LoginScreen.route) },
+                //color = androidx.compose.material3.MaterialTheme.colorScheme.onError
+            )
+            Spacer(modifier = Modifier.height(50.dp))
 
+        }
     }
 }
 

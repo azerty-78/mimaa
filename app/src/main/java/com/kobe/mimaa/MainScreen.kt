@@ -1,6 +1,9 @@
 package com.kobe.mimaa
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -24,7 +27,12 @@ fun MainScreen(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Routes.AUTH_GRAPHROUTE
+        startDestination = Routes.AUTH_GRAPHROUTE,
+        modifier = Modifier
+            .graphicsLayer {
+                compositingStrategy = CompositingStrategy.Offscreen
+            }
+        ,
     ){
         authGraph(navController = navController)
         homeGraph(navController = navController)
