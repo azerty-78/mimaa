@@ -25,13 +25,13 @@ object Routes{
         }
 
         //route du graph community
-        object CommunityScreen : Screen("home_screen")
+        object CommunityScreen : Screen("community_screen")
 
         //route du graph settings
-        object SettingsScreen : Screen("home_screen")
+        object SettingsScreen : Screen("settings_screen")
 
         //route du graph profile
-        object ProfileScreen : Screen("home_screen")
+        object ProfileScreen : Screen("profile_screen")
     }
 }
 
