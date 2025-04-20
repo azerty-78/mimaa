@@ -1,1 +1,5 @@
 /build
+
+# Fichiers de configuration Firebase
+/google-services.json
+/app/google-services.json
