@@ -15,22 +15,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.kobe.mimaa.R
 
@@ -89,52 +83,9 @@ data class Requirement(
 )
 
 
-@Composable
-fun PasswordRequirementsIndicator(
-    requirements: List<Requirement>,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier) {
-        Text(
-            "Exigences de sécurité :",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        requirements.take(4).forEach { requirement ->
-            RequirementItem(
-                description = requirement.description,
-                isMet = requirement.isMet
-            )
-        }
-
-        if (requirements.size > 4) {
-            var showAll by remember { mutableStateOf(false) }
-
-            TextButton(
-                onClick = { showAll = !showAll },
-                modifier = Modifier.align(Alignment.Start)
-            ) {
-                Text(if (showAll) "Voir moins" else "Voir plus")
-            }
-
-            if (showAll) {
-                requirements.drop(4).forEach { requirement ->
-                    RequirementItem(
-                        description = requirement.description,
-                        isMet = requirement.isMet
-                    )
-                }
-            }
-        }
-    }
-}
-
 // Vérifie les mots de passe courants
 fun isNotCommonPassword(password: String): Boolean {
-    val commonPasswords = setOf("password", "123456", "qwerty", "azerty")
+    val commonPasswords = setOf("password", "123456", "qwerty", "azerty", "000000")
     return !commonPasswords.contains(password.lowercase())
 }
 
