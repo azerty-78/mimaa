@@ -12,7 +12,7 @@ object Routes{
         val route: String
     ){
         //route du graph authentification
-        object LoginScreen : Screen("login_screen")
+        object SignInScreen : Screen("signin_screen")
         object SingUpScreen : Screen("singup_screen")
         object ForgotPasswordScreen : Screen("forgotpassword_screen")
 

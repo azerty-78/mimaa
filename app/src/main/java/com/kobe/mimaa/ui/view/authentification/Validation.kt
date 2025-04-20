@@ -85,7 +85,7 @@ data class Requirement(
 
 // Vérifie les mots de passe courants
 fun isNotCommonPassword(password: String): Boolean {
-    val commonPasswords = setOf("password", "123456", "qwerty", "azerty", "000000")
+    val commonPasswords = setOf("userPassword", "123456", "qwerty", "azerty", "000000")
     return !commonPasswords.contains(password.lowercase())
 }
 

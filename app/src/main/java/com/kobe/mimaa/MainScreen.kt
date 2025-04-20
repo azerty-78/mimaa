@@ -28,11 +28,6 @@ fun MainScreen(
     NavHost(
         navController = navController,
         startDestination = Routes.AUTH_GRAPHROUTE,
-//        modifier = Modifier
-//            .graphicsLayer {
-//                compositingStrategy = CompositingStrategy.Offscreen
-//            }
-//        ,
     ){
         authGraph(navController = navController)
         homeGraph(navController = navController)

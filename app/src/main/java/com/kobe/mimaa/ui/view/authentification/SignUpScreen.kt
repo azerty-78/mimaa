@@ -32,6 +32,7 @@ import androidx.compose.material.TextField
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,18 +56,30 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.kobe.mimaa.R
 import com.kobe.mimaa.presentation.navgraph.Routes
+import com.kobe.mimaa.ui.view.authentification.state.Auth_event
+import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.internal.wait
 
 @Composable
 fun SignUpScreen(
+    viewModel: Auth_viewModel = hiltViewModel(),
     navController: NavController,
-    //vm: FbViewModel,
+    onSignInClick: () -> Unit = {},
+    onSignUpSuccess: () -> Unit = {}
 ) {
+    LaunchedEffect(key1 = viewModel.uiState.value.successSignUp) {
+        if (viewModel.uiState.value.successSignUp) {
+            onSignUpSuccess()
+        }
+    }
+    
     val empty by remember { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -82,8 +95,8 @@ fun SignUpScreen(
 
     var validations = remember(email, password, c_password){
         mapOf(
-            "email" to isValidEmail(email),
-            "password" to passwordValidation.isValid,
+            "userEmail" to isValidEmail(email),
+            "userPassword" to passwordValidation.isValid,
             "c_password" to c_password.equals(password),
 
             "emailEmpty" to email.isEmpty(),
@@ -132,7 +145,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(50.dp))
 
 
-        //email error
+        //userEmail error
         OutlinedTextField(
             value = email,
             onValueChange = { newValue ->
@@ -145,7 +158,7 @@ fun SignUpScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.person_filled_icn),
-                    contentDescription = "email",
+                    contentDescription = "userEmail",
                     tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -161,7 +174,7 @@ fun SignUpScreen(
 
                 }
             },
-            isError = email.isNotBlank() && !validations["email"]!!,
+            isError = email.isNotBlank() && !validations["userEmail"]!!,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -185,16 +198,16 @@ fun SignUpScreen(
                 textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface // Texte saisi
             ),
         )
-        if(!validations["email"]!! && email.isNotBlank()){
+        if(!validations["userEmail"]!! && email.isNotBlank()){
             Text(
                 text = when {
-                    email.count { it == '@' } > 1 -> "Trop de @ dans l'email"
-                    '@' !in email -> "L'email doit contenir @"
+                    email.count { it == '@' } > 1 -> "Trop de @ dans l'userEmail"
+                    '@' !in email -> "L'userEmail doit contenir @"
                     email.split("@").let { it.size != 2 || it[1].count { c -> c == '.' } < 1 } ->
                         "Format de domaine invalide (ex: exemple.com)"
                     email.startsWith('.') || email.endsWith('.') ->
                         "Ne peut pas commencer/finir par un point"
-                    else -> "Format d'email invalide"
+                    else -> "Format d'userEmail invalide"
                 },
                 color = androidx.compose.material3.MaterialTheme.colorScheme.error,
                 style = androidx.compose.material3.MaterialTheme.typography.labelMedium.copy(
@@ -216,7 +229,7 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
 
-        //password
+        //userPassword
         OutlinedTextField(
             value = password,
             onValueChange = {newValue->
@@ -231,7 +244,7 @@ fun SignUpScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock_filled_icn),
-                    contentDescription = "password",
+                    contentDescription = "userPassword",
                     tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -258,7 +271,7 @@ fun SignUpScreen(
             else{
                 PasswordVisualTransformation()
             },
-            isError = password.isNotBlank() && !validations["password"]!!,
+            isError = password.isNotBlank() && !validations["userPassword"]!!,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Password
@@ -303,7 +316,7 @@ fun SignUpScreen(
         }
         Spacer(modifier = Modifier.height(16.dp))
 
-        //password confirmation
+        //userPassword confirmation
         OutlinedTextField(
             value = c_password,
             onValueChange = {newValue->
@@ -316,7 +329,7 @@ fun SignUpScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock_filled_icn),
-                    contentDescription = "password",
+                    contentDescription = "userPassword",
                     tint = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -387,7 +400,7 @@ fun SignUpScreen(
             onClick = {
                 loginAttempted = true
                 if(passwordValidation.isValid && isValidEmail(email) && validations["c_password"]!!){
-                    // creation de compte
+                    viewModel.onEvent(Auth_event.OnSignUp(email, password))
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -409,16 +422,11 @@ fun SignUpScreen(
                 )
             )
         }
-//            if (vm.signedIn.value){
-//                navController.navigate(Routes.Screen.LoginScreen.route)
-//            }
-//            vm.signedIn.value = false
 
 
         //navigation
-        TextButton(
-            onClick = { navController.navigate(Routes.Screen.LoginScreen.route) },
-        ){
+        //navController.navigate(Routes.Screen.LoginScreen.route
+        TextButton(onClick = { onSignInClick() }){
             Text(
                 text = "Vous avez deja un compte ? Connectez-vous",
                 style = androidx.compose.material3.MaterialTheme.typography.labelLarge.copy(
@@ -445,5 +453,5 @@ fun SignUpScreen(
 @Composable
 private fun SignUpPreview() {
     val navController = rememberNavController()
-    SignUpScreen(navController)
+    SignUpScreen(navController = navController)
 }

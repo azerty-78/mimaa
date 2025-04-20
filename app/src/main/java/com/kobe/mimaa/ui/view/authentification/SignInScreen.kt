@@ -24,12 +24,11 @@ import androidx.compose.material.OutlinedButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -37,13 +36,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,16 +47,35 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.kobe.mimaa.R
-import com.kobe.mimaa.presentation.navgraph.Routes
+import com.kobe.mimaa.ui.view.authentification.state.Auth_event
+import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
 
 @Composable
-fun LoginScreen(
+fun SingInScreen(
+    viewModel: Auth_viewModel = hiltViewModel(),
     navController: NavController,
+    onSignUpClick: () -> Unit = {},
+    onForgotPwdClick: () -> Unit = {},
+    onSignInSuccess: () -> Unit = {}
 ) {
+    val uiState by viewModel.uiState
+
+    LaunchedEffect(key1 = viewModel.uiState.value.successSignIn){
+        if(viewModel.uiState.value.successSignIn){
+            onSignInSuccess()
+        }
+    }
+
+    FullScreenLoader(
+        isVisible = uiState.isLoading,
+        loadingText = "Authentification en cours..."
+    )
+
+
     val empty by remember { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
@@ -74,8 +89,8 @@ fun LoginScreen(
 
     var validations = remember(email, password){
         mapOf(
-            "email" to isValidEmail(email),
-            "password" to passwordValidation.isValid,
+            "userEmail" to isValidEmail(email),
+            "userPassword" to passwordValidation.isValid,
             "emailEmpty" to email.isEmpty(),
             "passwordEmpty" to password.isEmpty(),
         )
@@ -108,7 +123,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(50.dp))
 
 
-        //email error
+        //userEmail error
         OutlinedTextField(
             value = email,
             onValueChange = { newValue ->
@@ -121,7 +136,7 @@ fun LoginScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.person_filled_icn),
-                    contentDescription = "email",
+                    contentDescription = "userEmail",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -137,7 +152,7 @@ fun LoginScreen(
 
                 }
             },
-            isError = email.isNotBlank() && !validations["email"]!!,
+            isError = email.isNotBlank() && !validations["userEmail"]!!,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Email
@@ -161,16 +176,16 @@ fun LoginScreen(
                 textColor = MaterialTheme.colorScheme.onSurface // Texte saisi
             ),
         )
-        if(!validations["email"]!! && email.isNotBlank()) {
+        if(!validations["userEmail"]!! && email.isNotBlank()) {
             Text(
                 text = when {
-                    email.count { it == '@' } > 1 -> "Trop de @ dans l'email"
-                    '@' !in email -> "L'email doit contenir @"
+                    email.count { it == '@' } > 1 -> "Trop de @ dans l'userEmail"
+                    '@' !in email -> "L'userEmail doit contenir @"
                     email.split("@").let { it.size != 2 || it[1].count { c -> c == '.' } < 1 } ->
                         "Format de domaine invalide (ex: exemple.com)"
                     email.startsWith('.') || email.endsWith('.') ->
                         "Ne peut pas commencer/finir par un point"
-                    else -> "Format d'email invalide"
+                    else -> "Format d'userEmail invalide"
                 },
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.labelMedium.copy(
@@ -192,7 +207,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
 
-        //password
+        //userPassword
         OutlinedTextField(
             value = password,
             onValueChange = {newValue->
@@ -205,7 +220,7 @@ fun LoginScreen(
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.lock_filled_icn),
-                    contentDescription = "password",
+                    contentDescription = "userPassword",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
@@ -232,7 +247,7 @@ fun LoginScreen(
             else{
                 PasswordVisualTransformation()
             },
-            isError = password.isNotBlank() && !validations["password"]!!,
+            isError = password.isNotBlank() && !validations["userPassword"]!!,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Password
@@ -278,7 +293,7 @@ fun LoginScreen(
 
         //navigation
         TextButton(
-            onClick = { navController.navigate(Routes.Screen.ForgotPasswordScreen.route) },
+            onClick = { onForgotPwdClick() },
         ){
             Text(
                 text = "Mot de passe oublie ? Changer le.",
@@ -291,11 +306,11 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(30.dp))
 
         //Button de connexion
-        Button(
+        OutlinedButton(
             onClick = {
                 loginAttempted = true
                 if (passwordValidation.isValid && isValidEmail(email)) {
-                    // Procéder à la connexion
+                    viewModel.onEvent(Auth_event.OnSignIn(email, password))
                 }
             },
             colors = ButtonDefaults.buttonColors(
@@ -375,7 +390,7 @@ fun LoginScreen(
 
         //navigation
         TextButton(
-            onClick = { navController.navigate(Routes.Screen.SingUpScreen.route) },
+            onClick = { onSignUpClick() },
         ){
             Text(
                 text = "Vous n'avez pas de compte ? Creez un compte",
@@ -403,6 +418,6 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     val navController = rememberNavController()
-    LoginScreen(navController = navController)
+    SingInScreen(navController = navController)
 
 }
