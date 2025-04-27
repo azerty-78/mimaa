@@ -3,5 +3,10 @@
     <string name="emai">Entrez votre email</string>
     <string name="password">Entrez votre mot de passe</string>
     <string name="confirm_password">Confrimez le mot de passe</string>
-    <string name="society_info">© 2025 Mimaa By KOBE - Tous droits réservés</string>
+    <string name="society_info">© 2025 Mima\'a By KOBE - Tous droits réservés</string>
+
+
+
+
+    <string name="client_id">96548235458-0tpl6s2j6nt7ficeff1t6iu570i5n5b6.apps.googleusercontent.com</string>
 </resources>
