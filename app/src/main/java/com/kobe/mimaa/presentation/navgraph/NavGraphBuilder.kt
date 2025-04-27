@@ -1,5 +1,9 @@
 package com.kobe.mimaa.presentation.navgraph
 
+import android.app.Activity.RESULT_OK
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.IntentSenderRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -37,6 +41,15 @@ fun NavGraphBuilder.authGraph(navController: NavController){
                 }
             }
 
+            val launcher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.StartIntentSenderForResult(),
+                onResult = { result ->
+                    if (result.resultCode == RESULT_OK) {
+                        viewModel.onEvent(Auth_event.OnGoogleSignInResult(result.data))
+                    }
+                }
+            )
+
             SingInScreen(
                 navController = navController,
                 onSignUpClick = {
@@ -53,6 +66,11 @@ fun NavGraphBuilder.authGraph(navController: NavController){
 //                    navController.navigate(Routes.HOME_GRAPHROUTE){
 //                        popUpTo(Routes.AUTH_GRAPHROUTE)
 //                    }
+                },
+                onSignInWithGoogle = {
+                    viewModel.onEvent(Auth_event.OnSignInWithGoogle { intentSender ->
+                        launcher.launch(IntentSenderRequest.Builder(intentSender).build())
+                    })
                 }
             )
         }

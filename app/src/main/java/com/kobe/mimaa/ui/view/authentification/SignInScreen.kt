@@ -1,5 +1,6 @@
 package com.kobe.mimaa.ui.view.authentification
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +55,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kobe.mimaa.R
 import com.kobe.mimaa.ui.view.authentification.state.Auth_event
 import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
+import com.kobe.mimaa.util.ConnectivityObserver
 
 @Composable
 fun SingInScreen(
@@ -60,9 +63,24 @@ fun SingInScreen(
     navController: NavController,
     onSignUpClick: () -> Unit = {},
     onForgotPwdClick: () -> Unit = {},
-    onSignInSuccess: () -> Unit = {}
+    onSignInSuccess: () -> Unit = {},
+    onSignInWithGoogle: () -> Unit = {},
+
 ) {
     val uiState by viewModel.uiState
+    val context = LocalContext.current
+    val networkStatus = viewModel.networkStatus.value
+
+    LaunchedEffect(key1 = uiState.errorSignIn) {
+        if (uiState.errorSignIn != null) {
+            Toast.makeText(context, uiState.errorSignIn, Toast.LENGTH_LONG).show()
+        }
+    }
+    LaunchedEffect(key1 = networkStatus) {
+        if (networkStatus == ConnectivityObserver.Status.Unavailable) {
+            Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_LONG).show()
+        }
+    }
 
     LaunchedEffect(key1 = viewModel.uiState.value.successSignIn){
         if(viewModel.uiState.value.successSignIn){
@@ -84,7 +102,6 @@ fun SingInScreen(
     val passwordValidation = remember(password) { validatePassword(password) }
 
     var isPasswordFocused by remember { mutableStateOf(false) }
-    val showPasswordRequirements = password.isNotEmpty() || isPasswordFocused
     var loginAttempted by remember { mutableStateOf(false) }
 
     var validations = remember(email, password){
@@ -274,11 +291,6 @@ fun SingInScreen(
                 textColor = MaterialTheme.colorScheme.onSurface // Texte saisi
             ),
         )
-        AnimatedPasswordRequirements(
-            password = password,
-            showRequirements = showPasswordRequirements,
-            modifier = Modifier.fillMaxWidth()
-        )
         // Message d'erreur global seulement après tentative de soumission
         if ((loginAttempted && !passwordValidation.isValid) || validations["passwordEmpty"]!!) {
             Text(
@@ -309,9 +321,14 @@ fun SingInScreen(
         OutlinedButton(
             onClick = {
                 loginAttempted = true
-                if (passwordValidation.isValid && isValidEmail(email)) {
-                    viewModel.onEvent(Auth_event.OnSignIn(email, password))
+                if (viewModel.connectivityObserver.isOnline()){
+                    if (passwordValidation.isValid && isValidEmail(email)) {
+                        viewModel.onEvent(Auth_event.OnSignIn(email, password))
+                    }
+                }else {
+                    Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_LONG).show()
                 }
+
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.primary,
@@ -359,6 +376,11 @@ fun SingInScreen(
         OutlinedButton(
             onClick = {
                 /* Google login */
+                if(viewModel.connectivityObserver.isOnline()){
+                    onSignInWithGoogle()
+                }else {
+                    Toast.makeText(context, "Pas de connexion internet", Toast.LENGTH_LONG).show()
+                }
             },
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.surface,

@@ -32,7 +32,7 @@ fun FullScreenLoader(
     progressIndicatorColor: Color = MaterialTheme.colorScheme.primary,
     progressIndicatorSize: Dp = 64.dp,
     strokeWidth: Dp = 6.dp,
-    loadingText: String? = "Chargement en cours..."
+    loadingText: String? = null
 ) {
     if (isVisible) {
         Box(

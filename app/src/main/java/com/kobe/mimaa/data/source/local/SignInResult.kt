@@ -1,6 +1,6 @@
 package com.kobe.mimaa.data.source.local
 
-data class SignResult(
+data class SignInResult(
     val data: User?,
     val errorMessage: String?
 )

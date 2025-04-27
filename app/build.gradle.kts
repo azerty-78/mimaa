@@ -32,11 +32,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -64,6 +64,8 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //implementation(libs.play.services.auth)
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
@@ -107,6 +109,15 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
     implementation ("com.airbnb.android:lottie-compose:6.1.0")
+
+
+    // Google Identity Services (pour SignInClient)
+    implementation("com.google.android.gms:play-services-auth:21.1.1")
+    implementation ("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation ("com.google.firebase:firebase-bom:32.7.0")
+
+
+
 }
 
 kapt {

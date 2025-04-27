@@ -1,11 +1,17 @@
 package com.kobe.mimaa.ui.view.authentification.state
 
+import android.content.Intent
+import android.content.IntentSender
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.auth.api.identity.SignInClient
+import com.kobe.mimaa.data.GoogleAuthUiHelper
 import com.kobe.mimaa.data.repository.UserRepository
+import com.kobe.mimaa.util.ConnectivityObserver
 import com.kobe.mimaa.util.Listener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,13 +21,31 @@ import javax.inject.Inject
 @HiltViewModel
 class Auth_viewModel
 @Inject constructor(
-    private val userRep: UserRepository
+    private val userRep: UserRepository,
+    private val oneTapClient: SignInClient,
+    private val googleAuthUiHelper: GoogleAuthUiHelper,
+    val connectivityObserver: ConnectivityObserver
 ) : ViewModel()
 {
     val uiState = mutableStateOf(Auth_state())
+    val networkStatus = mutableStateOf(ConnectivityObserver.Status.Unavailable)
+
+    companion object{
+        private const val TAG = "Auth_viewModel"
+    }
 
     init {
         getSignedUser()
+        observeConnectivity()
+    }
+
+    private fun observeConnectivity() {
+        viewModelScope.launch {
+            connectivityObserver.observe().collect { status ->
+                networkStatus.value = status
+                Log.e(TAG, "Network status : ${networkStatus.value}")
+            }
+        }
     }
 
     fun onEvent(event: Auth_event){
@@ -36,6 +60,25 @@ class Auth_viewModel
                 signUp(event.userEmail, event.userPassword)
             }
 
+            is Auth_event.OnSignInWithGoogle -> {
+                viewModelScope.launch {
+                    try {
+                        val intentSender = googleAuthUiHelper.getSignInIntent()
+                        intentSender?.let {
+                            event.onIntentSender(it)
+                        }
+                    } catch (e: Exception) {
+                        uiState.value = uiState.value.copy(
+                            errorSignIn = e.message,
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+
+            is Auth_event.OnGoogleSignInResult -> {
+                handleGoogleSignInResult(event.intent)
+            }
         }
     }
 
@@ -59,6 +102,7 @@ class Auth_viewModel
                         )
                     }
                     is Listener.Error -> {
+                        Log.e(TAG, "Sign-in error", result.e)
                         uiState.value = uiState.value.copy(
                             isLoading = false,
                             successSignIn = false,
@@ -90,6 +134,7 @@ class Auth_viewModel
                         )
                     }
                     is Listener.Error -> {
+                        Log.e(TAG, "Sign-up error", result.e)
                         uiState.value = uiState.value.copy(
                             isLoading = false,
                             successSignUp = false,
@@ -107,6 +152,7 @@ class Auth_viewModel
             userRep.getSignedUser().collect{result->
                 when(result){
                     is Listener.Error -> {
+                        Log.e(TAG, "Error getting signed user", result.e)
                         uiState.value = uiState.value.copy(
                             isLoading = false,
                             currentUser = null,
@@ -132,9 +178,10 @@ class Auth_viewModel
     //logout
     fun logout(){
         viewModelScope.launch {
-            userRep.logOut().collect{result->
+            userRep.logOut(oneTapClient).collect { result ->
                 when(result){
                     is Listener.Error -> {
+                        Log.e(TAG, "Logout error", result.e)
                         uiState.value = uiState.value.copy(
                             isLoading = false,
                             currentUser = null,
@@ -153,6 +200,41 @@ class Auth_viewModel
                         )
                     }
                 }
+            }
+        }
+    }
+
+    fun handleGoogleSignInResult(intent: Intent?) {
+        viewModelScope.launch {
+            uiState.value = uiState.value.copy(
+                isLoading = true,
+                isGoogleSignIn = true
+            )
+
+            try {
+                val result = userRep.signInWithGoogle(intent)
+                if (result.data != null) {
+                    uiState.value = uiState.value.copy(
+                        currentUser = result.data,
+                        successSignIn = true,
+                        isGoogleSignIn = true,
+                        isLoading = false
+                    )
+                } else {
+                    Log.e(TAG, "handleGoogleSignInResult error : ${result.errorMessage}")
+                    uiState.value = uiState.value.copy(
+                        errorSignIn = result.errorMessage,
+                        isGoogleSignIn = false,
+                        isLoading = false
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in handleGoogleSignInResult", e)
+                uiState.value = uiState.value.copy(
+                    errorSignIn = e.message,
+                    isGoogleSignIn = false,
+                    isLoading = false
+                )
             }
         }
     }
