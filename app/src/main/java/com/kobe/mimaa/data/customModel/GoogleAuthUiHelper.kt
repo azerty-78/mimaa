@@ -1,16 +1,14 @@
-package com.kobe.mimaa.data
+package com.kobe.mimaa.data.customModel
 
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.util.Log
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.BeginSignInRequest.GoogleIdTokenRequestOptions
 import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.android.gms.auth.api.identity.SignInCredential
 import com.kobe.mimaa.R
 import kotlinx.coroutines.tasks.await
-
 
 class GoogleAuthUiHelper(
     private val context: Context,
@@ -21,7 +19,7 @@ class GoogleAuthUiHelper(
             oneTapClient.beginSignIn(
                 BeginSignInRequest.builder()
                     .setGoogleIdTokenRequestOptions(
-                        GoogleIdTokenRequestOptions.builder()
+                        BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                             .setSupported(true)
                             .setServerClientId(context.getString(R.string.client_id))
                             .setFilterByAuthorizedAccounts(false)

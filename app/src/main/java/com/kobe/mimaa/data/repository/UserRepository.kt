@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.kobe.mimaa.data.GoogleAuthUiHelper
+import com.kobe.mimaa.data.customModel.GoogleAuthUiHelper
 import com.kobe.mimaa.data.source.local.SignInResult
 import com.kobe.mimaa.data.source.local.User
 import com.kobe.mimaa.util.ConnectivityObserver

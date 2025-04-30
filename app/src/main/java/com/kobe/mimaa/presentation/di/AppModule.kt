@@ -10,7 +10,7 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.kobe.mimaa.data.GoogleAuthUiHelper
+import com.kobe.mimaa.data.customModel.GoogleAuthUiHelper
 import com.kobe.mimaa.util.ConnectivityObserver
 import com.kobe.mimaa.util.NetworkConnectivityObserver
 import dagger.Module

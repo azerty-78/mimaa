@@ -6,6 +6,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-kapt")
     alias(libs.plugins.google.gms.google.services)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
 android {
@@ -20,6 +21,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+
+        buildConfigField("String", "apiKey", "\"${project.properties["apiKey"]}\"")
     }
 
     buildTypes {
@@ -40,6 +47,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
 }
 
@@ -122,6 +133,7 @@ dependencies {
 
     // Required for streaming operations (to use `Publisher` from Reactive Streams)
     implementation("org.reactivestreams:reactive-streams:1.0.4")
+
     implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
 
 

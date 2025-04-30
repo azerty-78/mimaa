@@ -9,7 +9,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient
-import com.kobe.mimaa.data.GoogleAuthUiHelper
+import com.kobe.mimaa.data.customModel.GoogleAuthUiHelper
 import com.kobe.mimaa.data.repository.UserRepository
 import com.kobe.mimaa.util.ConnectivityObserver
 import com.kobe.mimaa.util.Listener
