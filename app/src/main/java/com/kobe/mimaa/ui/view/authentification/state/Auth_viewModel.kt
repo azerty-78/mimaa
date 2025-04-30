@@ -28,7 +28,7 @@ class Auth_viewModel
 ) : ViewModel()
 {
     val uiState = mutableStateOf(Auth_state())
-    val networkStatus = mutableStateOf(ConnectivityObserver.Status.Unavailable)
+    val networkStatus = mutableStateOf(ConnectivityObserver.Status.Neutral)
 
     companion object{
         private const val TAG = "Auth_viewModel"

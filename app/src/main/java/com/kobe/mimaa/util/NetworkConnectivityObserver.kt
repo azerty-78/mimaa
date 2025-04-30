@@ -18,8 +18,6 @@ class NetworkConnectivityObserver
     private val connectityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     companion object{ private const val TAG = "NetworkConnectivityObserver" }
 
-
-
     override fun observe(): Flow<ConnectivityObserver.Status> {
         return callbackFlow {
             val callback = object : ConnectivityManager.NetworkCallback(){
@@ -61,7 +59,6 @@ class NetworkConnectivityObserver
         val capabilities = connectityManager.getNetworkCapabilities(network) ?: return false
         return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) || capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
-
 }
 
 
@@ -69,7 +66,7 @@ interface ConnectivityObserver {
     fun observe(): Flow<Status>
     fun isOnline(): Boolean
     enum class Status{
-        Available, Unavailable
+        Available, Unavailable, Neutral
     }
 
 }
