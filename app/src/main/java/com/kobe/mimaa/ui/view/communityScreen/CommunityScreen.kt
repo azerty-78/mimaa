@@ -30,11 +30,9 @@ fun CommunityScreen(
                 onClick = {
                     navController.navigate(Routes.Screen.ChatWithAIScreen.route){
                         popUpTo(Routes.Screen.CommunityScreen.route){
-                            inclusive = true
-                            saveState = true
+                            saveState = false
                         }
                         launchSingleTop = true
-                        restoreState = true
                     } 
                 },
                 shape = RoundedCornerShape(12.dp),

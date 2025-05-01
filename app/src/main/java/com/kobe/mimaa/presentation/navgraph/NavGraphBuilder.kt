@@ -139,8 +139,15 @@ fun NavGraphBuilder.communityGraph(navController: NavController){
             }
             CommunityScreen(navController = navController)
         }
-        composable(Routes.Screen.ChatWithAIScreen.route) {
-            ChatWithAIScreen()
+        composable(
+            route = Routes.Screen.ChatWithAIScreen.route,
+            arguments = listOf()
+        ) {
+            ChatWithAIScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         //more...
     }

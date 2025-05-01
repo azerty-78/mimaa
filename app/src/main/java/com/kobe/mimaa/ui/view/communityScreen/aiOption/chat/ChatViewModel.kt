@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 
-//@HiltViewModel
+
 class ChatViewModel(
     private val generativeModel: GenerativeModel
 ) : ViewModel(){
