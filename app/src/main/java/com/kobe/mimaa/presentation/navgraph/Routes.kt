@@ -26,6 +26,7 @@ object Routes{
 
         //route du graph community
         object CommunityScreen : Screen("community_screen")
+        object ChatWithAIScreen : Screen("community_screen/chat_with_ai")
 
         //route du graph settings
         object SettingsScreen : Screen("settings_screen")

@@ -5,7 +5,7 @@ import com.google.ai.client.generativeai.GenerativeModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 
-@HiltViewModel
+//@HiltViewModel
 class SummarizeViewModel(
     private val generativeModel: GenerativeModel
 ): ViewModel() {

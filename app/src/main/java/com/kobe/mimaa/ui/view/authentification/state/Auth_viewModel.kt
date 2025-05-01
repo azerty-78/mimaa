@@ -1,7 +1,6 @@
 package com.kobe.mimaa.ui.view.authentification.state
 
 import android.content.Intent
-import android.content.IntentSender
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore

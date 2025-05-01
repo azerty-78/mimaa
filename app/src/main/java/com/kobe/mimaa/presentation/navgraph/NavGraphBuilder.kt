@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.kobe.mimaa.ui.view.communityScreen.aiOption.chat.ChatWithAIScreen
 import com.kobe.mimaa.ui.view.authentification.ForgotPasswordScreen
 import com.kobe.mimaa.ui.view.authentification.SingInScreen
 import com.kobe.mimaa.ui.view.authentification.SignUpScreen
@@ -136,8 +137,10 @@ fun NavGraphBuilder.communityGraph(navController: NavController){
             LaunchedEffect(Unit) {
                 viewModel.getSignedUser()
             }
-
             CommunityScreen(navController = navController)
+        }
+        composable(Routes.Screen.ChatWithAIScreen.route) {
+            ChatWithAIScreen()
         }
         //more...
     }
