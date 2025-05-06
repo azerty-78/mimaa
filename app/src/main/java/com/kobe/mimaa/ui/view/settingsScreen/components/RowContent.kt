@@ -24,28 +24,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kobe.mimaa.R
 
-//sealed class RowIcon {
-//    data class Resource(val id: Int) : RowIcon()
-//    data class Painter(val painter: Painter) : RowIcon()
-//    data class Vector(val imageVector: ImageVector) : RowIcon()
-//}
-
-data class RowContentItem(
-    val title: String,
-    val icon: Int,
-    val onClick: () -> Unit
-)
-
 @Composable
 fun RowContent(
     item: RowContentItem,
-    titleColor: Color = Color.Unspecified,
-    iconColor: Color = Color.Unspecified,
     trailingIcon: @Composable () -> Unit = {
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
             contentDescription = "Aller à",
-            tint = iconColor.takeOrElse { Color.Unspecified },
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(26.dp)
         )
     }
@@ -61,7 +47,7 @@ fun RowContent(
         Icon(
             painter = painterResource(id = item.icon),
             contentDescription = item.title,
-            tint = iconColor.takeOrElse { Color.Unspecified },
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.size(26.dp)
         )
 
@@ -70,13 +56,14 @@ fun RowContent(
             style = MaterialTheme.typography.titleMedium.copy(
                 fontWeight = FontWeight.Bold,
             ),
-            color = titleColor.takeOrElse { Color.Unspecified },
+            color = MaterialTheme.colorScheme.onSurface
         )
 
         Spacer(modifier = Modifier.weight(1f))
         trailingIcon()
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -1,6 +1,7 @@
 package com.kobe.mimaa
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.graphicsLayer
@@ -15,16 +16,16 @@ import com.kobe.mimaa.presentation.navgraph.communityGraph
 import com.kobe.mimaa.presentation.navgraph.homeGraph
 import com.kobe.mimaa.presentation.navgraph.profileGraph
 import com.kobe.mimaa.presentation.navgraph.settingsGraph
-import com.kobe.mimaa.ui.view.communityScreen.CommunityScreen
-import com.kobe.mimaa.ui.view.homescreen.HomeScreen
-import com.kobe.mimaa.ui.view.profileScreen.ProfileScreen
-import com.kobe.mimaa.ui.view.settingsScreen.SettingsScreen
 
 
 @Composable
 fun MainScreen(
     navController: NavHostController
 ) {
+    // Empêche la réinitialisation lors de la rotation
+    DisposableEffect(Unit) {
+        onDispose { }
+    }
     NavHost(
         navController = navController,
         startDestination = Routes.AUTH_GRAPHROUTE,

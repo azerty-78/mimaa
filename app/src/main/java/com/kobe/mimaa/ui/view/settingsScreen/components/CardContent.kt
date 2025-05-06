@@ -16,19 +16,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kobe.mimaa.R
 
 @Composable
 fun CardContent(
-    listRowContent: List<RowContentItem> = emptyList(),
+    listRowContent: List<RowContentItem>,
     modifier: Modifier = Modifier,
     elevation: Dp = 4.dp,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp)
 ) {
     Card(
         modifier = modifier
-            .fillMaxWidth(fraction = 0.9f) // Prend 90% de la largeur pour les grands écrans
-            .padding(horizontal = 16.dp, vertical = 8.dp), // Ajout de padding pour les bords
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp, vertical = 8.dp) // Ajout de padding pour les bords
+        ,
+        colors = CardDefaults.cardColors(
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = elevation)
     ) {
@@ -53,32 +56,8 @@ fun CardContent(
 
 }
 
-val myList = listOf(
-    RowContentItem(
-        title = "Apparence",
-        icon = R.drawable.p_icn,
-        onClick = { println("Notifications cliquées") }
-    ),
-    RowContentItem(
-        title = "Apparence",
-        icon = R.drawable.p_icn,
-        onClick = { println("Notifications cliquées") }
-    ),
-    RowContentItem(
-        title = "Apparence",
-        icon = R.drawable.p_icn,
-        onClick = { println("Notifications cliquées") }
-    ),
-    RowContentItem(
-        title = "Apparence",
-        icon = R.drawable.p_icn,
-        onClick = { println("Notifications cliquées") }
-    )
-)
-
-
 @Preview
 @Composable
 private fun CardContentPrev() {
-    CardContent(myList)
+    CardContent(myList1)
 }

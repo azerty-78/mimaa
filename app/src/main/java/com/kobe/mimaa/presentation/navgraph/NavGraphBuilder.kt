@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -104,9 +105,11 @@ fun NavGraphBuilder.homeGraph(navController: NavController){
     ){
         composable(Routes.Screen.HomeScreen.route){
             val viewModel: Auth_viewModel = hiltViewModel()
+
             LaunchedEffect(Unit) {
                 viewModel.getSignedUser()
             }
+
             HomeScreen(
                 navController = navController,
                 currentUser = viewModel.uiState.value.currentUser
