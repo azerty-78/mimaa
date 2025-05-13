@@ -16,6 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.kobe.mimaa.ui.view.components.rowIconText.RowContent
+import com.kobe.mimaa.ui.view.components.rowIconText.RowContentItem
+import com.kobe.mimaa.ui.view.components.rowIconText.myList1
 
 @Composable
 fun CardContent(

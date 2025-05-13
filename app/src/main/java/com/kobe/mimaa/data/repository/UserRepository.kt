@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.kobe.mimaa.data.customModel.GoogleAuthUiHelper
-import com.kobe.mimaa.data.source.local.SignInResult
-import com.kobe.mimaa.data.source.local.User
+import com.kobe.mimaa.data.source.model.SignInResult
+import com.kobe.mimaa.data.source.model.User
 import com.kobe.mimaa.util.ConnectivityObserver
 import com.kobe.mimaa.util.Listener
 import kotlinx.coroutines.flow.catch

@@ -1,4 +1,4 @@
-package com.kobe.mimaa.ui.view.settingsScreen.components
+package com.kobe.mimaa.ui.view.components.rowIconText
 
 import androidx.annotation.DrawableRes
 import com.kobe.mimaa.R

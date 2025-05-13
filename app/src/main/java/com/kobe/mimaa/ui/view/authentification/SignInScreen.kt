@@ -65,7 +65,6 @@ fun SingInScreen(
     onForgotPwdClick: () -> Unit = {},
     onSignInSuccess: () -> Unit = {},
     onSignInWithGoogle: () -> Unit = {},
-
 ) {
     val uiState by viewModel.uiState
     val context = LocalContext.current

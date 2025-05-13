@@ -5,7 +5,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -140,7 +139,11 @@ fun NavGraphBuilder.communityGraph(navController: NavController){
             LaunchedEffect(Unit) {
                 viewModel.getSignedUser()
             }
-            CommunityScreen(navController = navController)
+
+            CommunityScreen(
+                navController = navController,
+                currentUser = viewModel.uiState.value.currentUser
+            )
         }
         composable(
             route = Routes.Screen.ChatWithAIScreen.route,
@@ -170,6 +173,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController){
 
             SettingsScreen(
                 navController = navController,
+                currentUser = viewModel.uiState.value.currentUser,
                 onLogout = {
                     viewModel.onEvent(Auth_event.OnLogout)
                     navController.navigate(Routes.AUTH_GRAPHROUTE) {
@@ -194,7 +198,10 @@ fun NavGraphBuilder.profileGraph(navController: NavController){
                 viewModel.getSignedUser()
             }
 
-            ProfileScreen(navController = navController)
+            ProfileScreen(
+                navController = navController,
+                currentUser = viewModel.uiState.value.currentUser
+            )
         }
         //more...
     }

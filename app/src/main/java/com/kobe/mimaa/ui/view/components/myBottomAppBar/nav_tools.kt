@@ -1,4 +1,4 @@
-package com.kobe.mimaa.ui.view.myBottomAppBar
+package com.kobe.mimaa.ui.view.components.myBottomAppBar
 
 import com.kobe.mimaa.R
 import com.kobe.mimaa.presentation.navgraph.Routes

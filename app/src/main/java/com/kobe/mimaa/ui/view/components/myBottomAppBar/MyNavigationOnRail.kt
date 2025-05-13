@@ -1,11 +1,11 @@
-package com.kobe.mimaa.ui.view.myBottomAppBar
+package com.kobe.mimaa.ui.view.components.myBottomAppBar
 
-import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,25 +13,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.kobe.mimaa.R
 
 @Composable
-fun MyBottomAppBar(
-    navController: NavController
+fun MyNavigationOnRail(
+    navController : NavController
 ) {
-
-    val navBackSactEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = navBackSactEntry?.destination?.route
-    val isMainRoute = bottomNavItems.any { it.route == currentRoute } // Filtre pour ne garder que les routes principales
-
-    NavigationBar(
+    NavigationRail(
         containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground
+        contentColor = MaterialTheme.colorScheme.onBackground,
+        header = {
+            Text("Mima'a")
+        }
     ) {
+        val navBackSactEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackSactEntry?.destination?.route
+
+        val isMainRoute = bottomNavItems.any { it.route == currentRoute } // Filtre pour ne garder que les routes principales
+
         bottomNavItems.forEach { item ->
             val isSelected = currentRoute == item.route
 
-            NavigationBarItem(
+            NavigationRailItem(
                 selected = isSelected && isMainRoute,
                 onClick = {
                     navController.navigate(item.route) {
@@ -58,8 +60,11 @@ fun MyBottomAppBar(
                         )
                     }
                 },
-                label = { Text(item.title) }
+                label = { Text(item.title) },
+                alwaysShowLabel = false,
             )
         }
+
     }
+
 }

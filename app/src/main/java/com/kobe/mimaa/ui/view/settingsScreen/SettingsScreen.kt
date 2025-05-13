@@ -1,10 +1,8 @@
 package com.kobe.mimaa.ui.view.settingsScreen
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,31 +12,27 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.pager.PageSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.kobe.mimaa.R
-import com.kobe.mimaa.ui.view.myBottomAppBar.MyBottomAppBar
-import com.kobe.mimaa.ui.view.myBottomAppBar.MyNavigationOnRail
+import com.kobe.mimaa.data.source.model.User
+import com.kobe.mimaa.ui.view.components.myBottomAppBar.MyBottomAppBar
+import com.kobe.mimaa.ui.view.components.myBottomAppBar.MyNavigationOnRail
+import com.kobe.mimaa.ui.view.components.myTopAppBar.MyTopBar
 import com.kobe.mimaa.ui.view.settingsScreen.components.CardContent
-import com.kobe.mimaa.ui.view.settingsScreen.components.RowContentItem
+import com.kobe.mimaa.ui.view.components.rowIconText.RowContentItem
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun SettingsScreen(
     navController: NavController,
+    currentUser: User? = null,
     onLogout: () -> Unit
 ) {
+    val user = currentUser?: return
     val settingsItems = listOf(
         listOf(
             RowContentItem("Mes informations", R.drawable.p_icn) {},
@@ -76,10 +70,7 @@ fun SettingsScreen(
                 MyNavigationOnRail(navController = navController)
 
                 // Contenu principal de l'écran
-                BoxWithConstraints(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp))
+                BoxWithConstraints(modifier = Modifier.fillMaxSize())
                 {
                     val columnCount = when {
                         maxWidth > 1200.dp -> 4
@@ -104,6 +95,14 @@ fun SettingsScreen(
             }
         }else{
             Scaffold(
+                topBar = {
+                    MyTopBar(
+                        user = user,
+                        modifier = Modifier,
+                        onNotificationClick = { /*--Rien pour le moment--*/ },
+                        onSearchClick = { /*--Rien pour le moment--*/  }
+                    )
+                },
                 bottomBar = {
                     MyBottomAppBar(navController = navController)
                 }

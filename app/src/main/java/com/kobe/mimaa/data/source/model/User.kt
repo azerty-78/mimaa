@@ -1,4 +1,4 @@
-package com.kobe.mimaa.data.source.local
+package com.kobe.mimaa.data.source.model
 
 
 data class User(

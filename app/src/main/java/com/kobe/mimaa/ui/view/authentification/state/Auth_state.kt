@@ -1,6 +1,6 @@
 package com.kobe.mimaa.ui.view.authentification.state
 
-import com.kobe.mimaa.data.source.local.User
+import com.kobe.mimaa.data.source.model.User
 
 data class Auth_state(
     val currentUser: User? = null,
