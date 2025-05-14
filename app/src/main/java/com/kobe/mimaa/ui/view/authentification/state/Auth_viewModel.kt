@@ -3,8 +3,6 @@ package com.kobe.mimaa.ui.view.authentification.state
 import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.auth.api.identity.SignInClient

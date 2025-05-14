@@ -1,4 +1,4 @@
-package com.kobe.mimaa.data.source.network
+package com.kobe.mimaa.data.source.logique_metier
 
 import java.util.UUID
 

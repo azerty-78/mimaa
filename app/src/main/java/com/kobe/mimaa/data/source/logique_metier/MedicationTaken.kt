@@ -1,4 +1,4 @@
-package com.kobe.mimaa.data.source.network
+package com.kobe.mimaa.data.source.logique_metier
 
 data class MedicationTaken(
     val prescriptionId: String? = null,
