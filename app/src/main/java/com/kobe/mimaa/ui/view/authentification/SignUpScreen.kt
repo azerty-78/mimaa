@@ -19,18 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,17 +44,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.kobe.mimaa.R
-import com.kobe.mimaa.presentation.navgraph.Routes
 import com.kobe.mimaa.ui.view.authentification.state.Auth_event
 import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import okhttp3.internal.wait
 
 @Composable
 fun SignUpScreen(
@@ -104,6 +89,43 @@ fun SignUpScreen(
             "c_passwordEmpty" to c_password.isEmpty(),
         )
     }
+
+    val colorsOutlinedTxtField = OutlinedTextFieldDefaults.colors(
+        // Borders
+        focusedBorderColor = MaterialTheme.colorScheme.primary,
+        unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+        disabledBorderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f), // Example disabled color
+        errorBorderColor = MaterialTheme.colorScheme.error,
+
+        // Container (Background)
+        //containerColor = MaterialTheme.colorScheme.surface, // Or another surface color
+        //disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f), // Example disabled color
+
+        // Text
+        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+        unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        disabledTextColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f), // Example disabled color
+        errorTextColor = MaterialTheme.colorScheme.onSurface, // Typically onSurface for error text color
+
+        // Label (from your previous example, kept for completeness)
+        focusedLabelColor = MaterialTheme.colorScheme.primary,
+        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        disabledLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f), // Example disabled color
+        errorLabelColor = MaterialTheme.colorScheme.error,
+
+
+        // Leading Icon
+        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedLeadingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f), // Example disabled color
+        errorLeadingIconColor = MaterialTheme.colorScheme.error,
+
+        // Trailing Icon
+        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
+        unfocusedTrailingIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f), // Example disabled color
+        errorTrailingIconColor = MaterialTheme.colorScheme.error
+    )
 
     //for firebase indicator
     Column(
@@ -189,14 +211,7 @@ fun SignUpScreen(
                 .fillMaxWidth()
                 .wrapContentHeight()
             ,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline,
-                //focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant,
-                //focusedLabelColor = MaterialTheme.colorScheme.primary, // Label focus
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface // Texte saisi
-            ),
+            colors = colorsOutlinedTxtField,
         )
         if(!validations["userEmail"]!! && email.isNotBlank()){
             Text(
@@ -289,14 +304,7 @@ fun SignUpScreen(
                     isPasswordFocused = focuseState.isFocused
                 }
             ,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline,
-                //focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, // Label non focus
-                //focusedLabelColor = MaterialTheme.colorScheme.primary, // Label focus
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface // Texte saisi
-            ),
+            colors = colorsOutlinedTxtField,
         )
         AnimatedPasswordRequirements(
             password = password,
@@ -374,14 +382,7 @@ fun SignUpScreen(
                     isPasswordFocused = focuseState.isFocused
                 }
             ,
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline,
-                //focusedBorderColor = MaterialTheme.colorScheme.primary,
-                unfocusedLabelColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurfaceVariant, // Label non focus
-                //focusedLabelColor = MaterialTheme.colorScheme.primary, // Label focus
-                cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onSurface // Texte saisi
-            ),
+            colors = colorsOutlinedTxtField,
         )
         if ((validations["c_passwordEmpty"]!!) || (!validations["c_password"]!!)) {
             Text(
@@ -404,11 +405,11 @@ fun SignUpScreen(
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
-                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimary
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                containerColor = MaterialTheme.colorScheme.primary
             ),
             shape = RoundedCornerShape(8.dp),
-            elevation = ButtonDefaults.elevation(10.dp),
+            elevation = ButtonDefaults.elevatedButtonElevation(10.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
