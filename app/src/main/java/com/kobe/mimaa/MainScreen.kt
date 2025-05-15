@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.kobe.mimaa.presentation.navgraph.Routes
 import com.kobe.mimaa.presentation.navgraph.authGraph
 import com.kobe.mimaa.presentation.navgraph.communityGraph
+import com.kobe.mimaa.presentation.navgraph.dashboardGraph
 import com.kobe.mimaa.presentation.navgraph.homeGraph
 import com.kobe.mimaa.presentation.navgraph.profileGraph
 import com.kobe.mimaa.presentation.navgraph.settingsGraph
@@ -32,6 +33,7 @@ fun MainScreen(
     ){
         authGraph(navController = navController)
         homeGraph(navController = navController)
+        dashboardGraph(navController = navController)
         communityGraph(navController = navController)
         settingsGraph(navController = navController)
         profileGraph(navController = navController)

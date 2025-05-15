@@ -56,7 +56,7 @@ fun MyNavigationOnRail(
                                 id = if (isSelected) item.selectedIcon
                                 else item.unselectedIcon
                             ),
-                            contentDescription = item.title
+                            contentDescription = item.title,
                         )
                     }
                 },

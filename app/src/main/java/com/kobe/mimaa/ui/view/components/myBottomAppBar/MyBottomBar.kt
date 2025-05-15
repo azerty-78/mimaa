@@ -1,5 +1,6 @@
 package com.kobe.mimaa.ui.view.components.myBottomAppBar
 
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -9,7 +10,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -18,7 +21,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 fun MyBottomAppBar(
     navController: NavController
 ) {
-
     val navBackSactEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackSactEntry?.destination?.route
     val isMainRoute = bottomNavItems.any { it.route == currentRoute } // Filtre pour ne garder que les routes principales
@@ -53,11 +55,17 @@ fun MyBottomAppBar(
                                 id = if (isSelected) item.selectedIcon
                                 else item.unselectedIcon
                             ),
-                            contentDescription = item.title
+                            contentDescription = item.title,
+                            modifier = Modifier.size(24.dp)
                         )
                     }
                 },
-                label = { Text(item.title) }
+                label = {
+                    Text(
+                        text = item.title,
+                        style = MaterialTheme.typography.labelSmall
+                    )
+                }
             )
         }
     }

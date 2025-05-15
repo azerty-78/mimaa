@@ -11,6 +11,12 @@ val bottomNavItems = listOf(
         unselectedIcon = R.drawable.home_unfilled_icn
     ),
     BottomNavItem(
+        title = "Dashboard",
+        route = Routes.Screen.DashboardScreen.route,
+        selectedIcon = R.drawable.pregnancy_filled_icn,
+        unselectedIcon = R.drawable.pregnancy_unfilled_icn
+    ),
+    BottomNavItem(
         title = "Community",
         route = Routes.Screen.CommunityScreen.route,
         selectedIcon = R.drawable.community_filled_icn,

@@ -1,4 +1,4 @@
-package com.kobe.mimaa.ui.view.homescreen
+package com.kobe.mimaa.ui.view.homeScreen
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController

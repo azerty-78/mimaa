@@ -17,9 +17,10 @@ import com.kobe.mimaa.ui.view.authentification.SignUpScreen
 import com.kobe.mimaa.ui.view.authentification.state.Auth_event
 import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
 import com.kobe.mimaa.ui.view.communityScreen.CommunityScreen
-import com.kobe.mimaa.ui.view.homescreen.HomeScreen
-import com.kobe.mimaa.ui.view.homescreen.TopicDetailScreen
-import com.kobe.mimaa.ui.view.homescreen.TopicListScreen
+import com.kobe.mimaa.ui.view.dashboard.DashboardScreen
+import com.kobe.mimaa.ui.view.homeScreen.HomeScreen
+import com.kobe.mimaa.ui.view.homeScreen.TopicDetailScreen
+import com.kobe.mimaa.ui.view.homeScreen.TopicListScreen
 import com.kobe.mimaa.ui.view.profileScreen.ProfileScreen
 import com.kobe.mimaa.ui.view.settingsScreen.SettingsScreen
 
@@ -122,6 +123,27 @@ fun NavGraphBuilder.homeGraph(navController: NavController){
             TopicDetailScreen(
                 topicId = topicId,
                 navController = navController
+            )
+        }
+        //more...
+    }
+}
+
+//dashboard graph
+fun NavGraphBuilder.dashboardGraph(navController: NavController){
+    navigation(
+        startDestination = Routes.Screen.DashboardScreen.route,
+        route = Routes.DASHBOARD_GRAPHROUTE
+    ){
+        composable(Routes.Screen.DashboardScreen.route){
+            val viewModel: Auth_viewModel = hiltViewModel()
+            LaunchedEffect(Unit) {
+                viewModel.getSignedUser()
+            }
+
+            DashboardScreen(
+                navController = navController,
+                currentUser = viewModel.uiState.value.currentUser,
             )
         }
         //more...
