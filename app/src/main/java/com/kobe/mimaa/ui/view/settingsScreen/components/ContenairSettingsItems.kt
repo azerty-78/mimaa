@@ -21,7 +21,7 @@ import com.kobe.mimaa.ui.view.components.rowIconText.RowContentItem
 import com.kobe.mimaa.ui.view.components.rowIconText.myList1
 
 @Composable
-fun CardContent(
+fun ContenairSettingsItems(
     listRowContent: List<RowContentItem>,
     modifier: Modifier = Modifier,
     elevation: Dp = 4.dp,
@@ -62,5 +62,5 @@ fun CardContent(
 @Preview
 @Composable
 private fun CardContentPrev() {
-    CardContent(myList1)
+    ContenairSettingsItems(myList1)
 }

@@ -22,7 +22,7 @@ import com.kobe.mimaa.data.source.model.User
 import com.kobe.mimaa.ui.view.components.myBottomAppBar.MyBottomAppBar
 import com.kobe.mimaa.ui.view.components.myBottomAppBar.MyNavigationOnRail
 import com.kobe.mimaa.ui.view.components.myTopAppBar.MyTopBar
-import com.kobe.mimaa.ui.view.settingsScreen.components.CardContent
+import com.kobe.mimaa.ui.view.settingsScreen.components.ContenairSettingsItems
 import com.kobe.mimaa.ui.view.components.rowIconText.RowContentItem
 
 @SuppressLint("UnusedBoxWithConstraintsScope")
@@ -84,7 +84,7 @@ fun SettingsScreen(
                     ) {
                         items(settingsItems.size) { index ->
                             val cardItems = settingsItems[index]
-                            CardContent(
+                            ContenairSettingsItems(
                                 listRowContent = cardItems,
                                 modifier = Modifier.fillMaxWidth()
                             )
@@ -123,7 +123,7 @@ fun SettingsScreen(
                     ) {
                         items(settingsItems.size) { index ->  // Utilisation de .size et index
                             val cardItems = settingsItems[index]
-                            CardContent(
+                            ContenairSettingsItems(
                                 listRowContent = cardItems,
                                 modifier = Modifier.fillMaxWidth()
                             )
