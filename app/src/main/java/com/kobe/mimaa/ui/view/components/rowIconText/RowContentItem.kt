@@ -1,6 +1,8 @@
 package com.kobe.mimaa.ui.view.components.rowIconText
 
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.input.KeyboardType
 import com.kobe.mimaa.R
 
 
@@ -11,31 +13,34 @@ import com.kobe.mimaa.R
 //}
 
 data class RowContentItem(
-    val title: String,
+    val title: String? = null,
+    val value: String,
     @DrawableRes val icon: Int,
-    val onClick: () -> Unit
+    val keyboardType: KeyboardType = KeyboardType.Text,
+    val onClick: (RowContentItem) -> Unit, // Modifier le type de onClick
+    val onLongClick: ((RowContentItem) -> Unit)? = null // Ajouter une option pour un long clic
 )
 
 
 
 val myList1 = listOf(
     RowContentItem(
-        title = "Apparence",
+        value = "Apparence",
         icon = R.drawable.p_icn,
         onClick = { println("Notifications cliquées") }
     ),
     RowContentItem(
-        title = "Apparence",
+        value = "Apparence",
         icon = R.drawable.p_icn,
         onClick = { println("Notifications cliquées") }
     ),
     RowContentItem(
-        title = "Apparence",
+        value = "Apparence",
         icon = R.drawable.p_icn,
         onClick = { println("Notifications cliquées") }
     ),
     RowContentItem(
-        title = "Apparence",
+        value = "Apparence",
         icon = R.drawable.p_icn,
         onClick = { println("Notifications cliquées") }
     )

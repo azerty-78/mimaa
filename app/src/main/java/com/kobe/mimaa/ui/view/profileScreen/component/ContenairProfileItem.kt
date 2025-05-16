@@ -19,43 +19,11 @@ import com.kobe.mimaa.ui.view.components.rowIconText.RowContentItem
 
 @Composable
 fun ContenairProfileItem(
-    currentUser: User? = null,
     listRowContent: List<RowContentItem>,
     modifier: Modifier = Modifier,
     elevation: Dp = 4.dp,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp)
 ) {
-    val user = currentUser?: return
-
-    val profileItems = listOf(
-        RowContentItem(
-            title = user.username.toString(),
-            icon = R.drawable.person_filled_icn,
-            onClick = { /*Open bottomSheet for update userInformations*/ }
-        ),
-        RowContentItem(
-            title = user.password,
-            icon = R.drawable.lock_filled_icn,
-            onClick = { /*Open bottomSheet for update userInformations*/ }
-        ),
-        RowContentItem(
-            title = user.username.toString(),
-            icon = R.drawable.person_filled_icn,
-            onClick = { /*Open bottomSheet for update userInformations*/ }
-        ),
-        RowContentItem(
-            title = user.username.toString(),
-            icon = R.drawable.person_filled_icn,
-            onClick = { /*Open bottomSheet for update userInformations*/ }
-        ),
-        RowContentItem(
-            title = user.username.toString(),
-            icon = R.drawable.person_filled_icn,
-            onClick = { /*Open bottomSheet for update userInformations*/ }
-        ),
-    )
-
-
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -83,8 +51,6 @@ fun ContenairProfileItem(
                     )
                 }
             }
-
         }
     }
-
 }

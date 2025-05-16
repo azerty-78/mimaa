@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
 import com.kobe.mimaa.presentation.navgraph.Routes
 import com.kobe.mimaa.ui.theme.MimaaTheme
 import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel

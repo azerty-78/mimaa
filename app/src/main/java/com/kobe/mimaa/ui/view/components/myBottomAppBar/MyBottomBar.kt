@@ -25,6 +25,7 @@ fun MyBottomAppBar(
     val currentRoute = navBackSactEntry?.destination?.route
     val isMainRoute = bottomNavItems.any { it.route == currentRoute } // Filtre pour ne garder que les routes principales
 
+
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.onBackground

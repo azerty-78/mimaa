@@ -205,10 +205,7 @@ fun SingInScreen(
                 color = MaterialTheme.colorScheme.onSurface
             ),
             shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-            ,
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
             colors = colorsOutlinedTxtField,
         )
         if(!validations["userEmail"]!! && email.isNotBlank()) {
@@ -394,8 +391,8 @@ fun SingInScreen(
                 }
             },
             colors = ButtonDefaults.buttonColors(
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.colorScheme.background,
                 disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(
                     alpha = 2f
                 )

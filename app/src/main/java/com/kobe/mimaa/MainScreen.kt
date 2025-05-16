@@ -24,9 +24,7 @@ fun MainScreen(
     navController: NavHostController
 ) {
     // Empêche la réinitialisation lors de la rotation
-    DisposableEffect(Unit) {
-        onDispose { }
-    }
+    DisposableEffect(Unit) { onDispose { } }
     NavHost(
         navController = navController,
         startDestination = Routes.AUTH_GRAPHROUTE,
