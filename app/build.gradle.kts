@@ -1,3 +1,6 @@
+import java.util.Properties
+
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -26,7 +29,12 @@ android {
             useSupportLibrary = true
         }
 
-        buildConfigField("String", "apiKey", "\"${project.properties["apiKey"]}\"")
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        val apiKey = properties.getProperty("apiKey") ?: ""
+        buildConfigField("String", "apiKey", "\"$apiKey\"")
+
+        //buildConfigField("String", "apiKey", "\"${project.properties["apiKey"]}\"")
     }
 
     buildTypes {

@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ main ]  # Tests aussi sur les PR vers develop
 
 jobs:
   test:
@@ -19,6 +19,18 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 34
+          build-tools: 34.0.0
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "ndk.dir=$ANDROID_NDK_HOME" >> local.properties
+          echo "apiKey=${{ secrets.apiKey }}" >> local.properties
 
       - name: Cache Gradle packages
         uses: actions/cache@v4
@@ -36,11 +48,24 @@ jobs:
       - name: Run unit tests
         run: ./gradlew test
 
+      - name: Run lint checks
+        run: ./gradlew lint
+
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Upload APK (only on develop/main)
+        if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug
+          name: app-debug-${{ github.ref_name }}
           path: app/build/outputs/apk/debug/*.apk
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ github.ref_name }}
+          path: |
+            app/build/reports/
+            app/build/test-results/
