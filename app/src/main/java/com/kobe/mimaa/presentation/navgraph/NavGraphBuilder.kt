@@ -1,6 +1,7 @@
 package com.kobe.mimaa.presentation.navgraph
 
 import android.app.Activity.RESULT_OK
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -10,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.kobe.mimaa.ui.view.UnsupportedFeatureScreen
 import com.kobe.mimaa.ui.view.communityScreen.aiOption.chat.ChatWithAIScreen
 import com.kobe.mimaa.ui.view.authentification.ForgotPasswordScreen
 import com.kobe.mimaa.ui.view.authentification.SingInScreen
@@ -17,6 +19,7 @@ import com.kobe.mimaa.ui.view.authentification.SignUpScreen
 import com.kobe.mimaa.ui.view.authentification.state.Auth_event
 import com.kobe.mimaa.ui.view.authentification.state.Auth_viewModel
 import com.kobe.mimaa.ui.view.communityScreen.CommunityScreen
+import com.kobe.mimaa.ui.view.communityScreen.aiOption.chat.ChatMessage
 import com.kobe.mimaa.ui.view.dashboard.DashboardScreen
 import com.kobe.mimaa.ui.view.homeScreen.HomeScreen
 import com.kobe.mimaa.ui.view.homeScreen.TopicDetailScreen
@@ -170,12 +173,18 @@ fun NavGraphBuilder.communityGraph(navController: NavController){
         composable(
             route = Routes.Screen.ChatWithAIScreen.route,
             arguments = listOf()
-        ) {
-            ChatWithAIScreen(
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
+        ) {backStackEntry ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2) {
+                ChatWithAIScreen(
+                    onBackClick = {
+                        backStackEntry.savedStateHandle.remove<ChatMessage>("lastMessage")
+                        navController.popBackStack()
+                    }
+                )
+            } else {
+                // Afficher un écran alternatif ou un message d'erreur
+                UnsupportedFeatureScreen()
+            }
         }
         //more...
     }
