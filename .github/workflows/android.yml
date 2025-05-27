@@ -40,15 +40,6 @@ jobs:
         run: ./gradlew lint || echo "Lint checks failed, see report for details"
         continue-on-error: true
 
-      - name: Upload Lint reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-reports-${{ github.ref_name }}
-          path: |
-            app/build/reports/lint-results*
-            app/build/intermediates/lint_intermediate_text_report/
-
       - name: Cache Gradle packages
         uses: actions/cache@v4
         with:
