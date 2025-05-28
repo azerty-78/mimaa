@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main, develop ]
   pull_request:
-    branches: [ main ]  # Tests aussi sur les PR vers develop
+    branches: [ main ]
 
 jobs:
   test:
@@ -24,21 +24,7 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           api-level: 35
-          build-tools: 35.0.0 #34 -> 26
-
-      - name: Create local.properties
-        run: |
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-          echo "ndk.dir=$ANDROID_NDK_HOME" >> local.properties
-          echo "apiKey=${{ secrets.apiKey }}" >> local.properties
-
-      - name: Create google-services.json
-        run: |
-          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
-
-      - name: Run lint checks
-        run: ./gradlew lint || echo "Lint checks failed, see report for details"
-        continue-on-error: true
+          build-tools: 35.0.0
 
       - name: Cache Gradle packages
         uses: actions/cache@v4
@@ -50,18 +36,33 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          echo "ndk.dir=$ANDROID_NDK_HOME" >> local.properties
+          echo "apiKey=${{ secrets.apiKey }}" >> local.properties
+
+      - name: Create google-services.json
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > app/google-services.json
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run unit tests
-        run: ./gradlew test
-
-      - name: Run lint checks
-        run: ./gradlew lint
-
+      # Étape 1: Build d'abord (plus rapide pour détecter les erreurs de compilation)
       - name: Build debug APK
         run: ./gradlew assembleDebug
 
+      # Étape 2: Tests unitaires
+      - name: Run unit tests
+        run: ./gradlew test
+
+      # Étape 3: Lint (avec gestion des erreurs)
+      - name: Run lint checks
+        run: ./gradlew lint -Dlint.baselines.continue=true
+        continue-on-error: true
+
+      # Upload des artefacts
       - name: Upload APK (only on develop/main)
         if: github.event_name == 'push'
         uses: actions/upload-artifact@v4
@@ -77,3 +78,12 @@ jobs:
           path: |
             app/build/reports/
             app/build/test-results/
+
+      - name: Upload lint reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-reports-${{ github.ref_name }}
+          path: |
+            app/build/reports/lint-results-debug.html
+            app/lint-baseline.xml

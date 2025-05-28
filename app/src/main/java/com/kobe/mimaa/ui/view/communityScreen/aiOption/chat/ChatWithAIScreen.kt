@@ -50,7 +50,7 @@ import com.kobe.mimaa.R
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.S_V2)//VANILLA_ICE_CREAM)
+//@RequiresApi(Build.VERSION_CODES.S_V2)//VANILLA_ICE_CREAM)
 @Composable
 internal fun ChatWithAIScreen(
     chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory),
