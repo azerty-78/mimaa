@@ -63,8 +63,6 @@ fun DashboardScreen(
                         maxWidth > 600.dp -> 2//tablette
                         else -> 1//smartphone
                     }
-
-
                 }
             }
         }
